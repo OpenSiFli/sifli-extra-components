@@ -1,0 +1,8 @@
+config USING_TF_HOT_PLUG
+        bool "Enable tf Hot Plug"
+        default n
+
+config TF_HOT_PLUG_PIN
+        int "TF Hot Plug Pin Number"
+        depends on USING_TF_HOT_PLUG
+        default 26

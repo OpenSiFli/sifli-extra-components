@@ -1,0 +1,14 @@
+import os
+from building import *
+import rtconfig
+
+src = []
+inc = []
+
+cwd = GetCurrentDir()
+inc    += [cwd]
+src  += Glob('./*.c')
+
+group = DefineGroup('tf_hot_plug', src, depend = ['USING_TF_HOT_PLUG'], CPPPATH = inc)
+
+Return('group')
