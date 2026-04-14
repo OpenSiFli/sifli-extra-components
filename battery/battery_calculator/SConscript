@@ -9,6 +9,6 @@ cwd = GetCurrentDir()
 inc    += [cwd]
 src  += Glob('./*.c')
 
-group = DefineGroup('battery_calculator', src, depend = ['USING_BATTERY_CALCULATOR'], CPPPATH = inc)
+group = DefineGroup('component_battery_calculator', src, depend = ['USING_COMPONENT_BATTERY_CALCULATOR'], CPPPATH = inc)
 
 Return('group')
