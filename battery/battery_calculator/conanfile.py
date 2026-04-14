@@ -2,7 +2,7 @@ from conan import ConanFile
 
 class Battery_CalculatorRecipe(ConanFile):
     name = "battery_calculator"
-    version = "1.0"
+    version = "1.2"
 
     license = "Apache-2.0"
     user = "sifli"

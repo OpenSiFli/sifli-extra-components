@@ -1,0 +1,3 @@
+config USING_COMPONENT_BATTERY_CALCULATOR
+        bool "Enable component battery calculator"
+        default n
