@@ -4,7 +4,7 @@ class AntiwordRecipe(ConanFile):
     name = "antiword"
     version = "0.37.0"
 
-    license = "GPL-2.0-only"
+    license = "Apache-2.0"
     user = "sifli"
     author = "sifli"
     url = "<Package recipe repository url here, for issues about the package>"
@@ -15,7 +15,7 @@ class AntiwordRecipe(ConanFile):
     support_sdk_version = "^2.4"
 
     # Sources are located in the same place as this recipe, copy them to the recipe
-    exports_sources = "SConscript", "Kconfig", "README.md", "LICENSE", "*.c", "*.cc", "*.cpp", "*.h"
+    exports_sources = "*"
 
     python_requires = "sf-pkg-base/[^1.0]@sifli"
     python_requires_extend = "sf-pkg-base.SourceOnlyBase"

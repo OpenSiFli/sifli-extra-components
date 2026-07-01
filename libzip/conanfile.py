@@ -15,7 +15,7 @@ class LibzipRecipe(ConanFile):
     support_sdk_version = "^2.4"
 
     # Sources are located in the same place as this recipe, copy them to the recipe
-    exports_sources = "SConscript", "Kconfig", "README.md", "LICENSE", "AUTHORS", "src/*", "lib/*", "*.c", "*.cc", "*.cpp", "*.h"
+    exports_sources = "*"
 
     python_requires = "sf-pkg-base/[^1.0]@sifli"
     python_requires_extend = "sf-pkg-base.SourceOnlyBase"
