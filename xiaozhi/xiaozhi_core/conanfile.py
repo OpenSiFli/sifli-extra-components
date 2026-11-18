@@ -8,8 +8,8 @@ class XiaozhiCoreRecipe(ConanFile):
     license = "Apache-2.0"
     user = "sifli"
     author = "sifli"
-    url = "https://github.com/OpenSiFli/extra-components"
-    homepage = "https://github.com/OpenSiFli/extra-components"
+    url = "https://github.com/OpenSiFli/sifli-extra-components"
+    homepage = "https://github.com/OpenSiFli/sifli-extra-components"
     description = "Xiaozhi AI voice assistant client: WebSocket/MQTT link, Opus audio path, MCP tools"
     topics = ("xiaozhi", "ai", "voice", "websocket", "opus", "mcp")
 
