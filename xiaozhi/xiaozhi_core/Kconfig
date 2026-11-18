@@ -1,0 +1,59 @@
+menu "Xiaozhi core"
+
+config PKG_USING_XIAOZHI
+    bool "Enable xiaozhi core component"
+    default y
+    depends on RT_USING_LWIP
+    depends on PKG_USING_CJSON
+
+if PKG_USING_XIAOZHI
+
+choice XIAOZHI_TRANSPORT
+    prompt "Long connection transport"
+    default XIAOZHI_TRANSPORT_WS
+
+config XIAOZHI_TRANSPORT_WS
+    bool "WebSocket"
+    depends on RT_LWIP_USING_WEBSOCKET
+
+config XIAOZHI_TRANSPORT_MQTT
+    bool "MQTT (control channel only for now)"
+    depends on RT_LWIP_USING_MQTT
+
+endchoice
+
+config XIAOZHI_USING_MSH
+    bool "Register msh commands (xz ...)"
+    default y
+
+config XIAOZHI_FEATURE_MCP
+    bool "Device tool registration (MCP)"
+    default y
+    help
+      Compiles feature/mcp/ (tool registry + JSON-RPC routing) and the
+      1.5 KB MCP payload buffer inside xz_msg_t. Turn it off if the
+      product registers no tool: both the code and the buffer vanish.
+
+config XIAOZHI_FEATURE_AUDIO
+    bool "Built-in audio pipeline (Opus encode / decode)"
+    depends on PKG_LIB_OPUS
+    default n
+    help
+      Enable this to let the component own the audio path end to end:
+      Opus encoder/decoder, the 60 ms framing, and the microphone /
+      speaker on audio_server. The product writes no audio code and does
+      not need to fill cfg.audio_out_cb.
+
+      Board differences (on-chip codec or I2S / PDM, and the PA chip) are
+      selected by Kconfig (AUDIO_MIC_USING_*, AUDIO_SPEAKER_USING_*,
+      board.conf PA_USING_*), so this code is the same on every board.
+
+      Requires libopus (CONFIG_PKG_LIB_OPUS).
+
+config XIAOZHI_THREAD_STACK_SIZE
+    int "Worker thread stack size"
+    default 12288
+
+endif
+
+endmenu

@@ -1,0 +1,54 @@
+import os
+from building import *
+
+cwd = GetCurrentDir()
+
+# The tree has three parts:
+#   root                public API and implementation (xiaozhi.c / xiaozhi.h)
+#   core/               required: protocol + network, always compiled
+#     channel/            link transport (WebSocket or MQTT, one only)
+#     proto/              protocol codec + bootstrap HTTP
+#   feature/            optional: one subdirectory per Kconfig switch
+#     mcp/                XIAOZHI_FEATURE_MCP
+#     audio/              XIAOZHI_FEATURE_AUDIO (Opus + audio_server mic/speaker)
+#     shell/              XIAOZHI_USING_MSH
+src  = Glob('*.c')
+src += Glob('core/channel/*.c')
+src += Glob('core/proto/*.c')
+
+if GetDepend('XIAOZHI_FEATURE_MCP'):
+    src += Glob('feature/mcp/*.c')
+if GetDepend('XIAOZHI_FEATURE_AUDIO'):
+    src += Glob('feature/audio/*.c')
+if GetDepend('XIAOZHI_USING_MSH'):
+    src += Glob('feature/shell/*.c')
+
+
+def drop(sources, name):
+    """Drop a source file by its file name.
+
+    Glob returns SCons nodes whose str() form differs between platforms and
+    variant directories, so comparing basenames is more stable than comparing
+    relative paths.
+    """
+    return [s for s in sources
+            if os.path.basename(str(s).replace('\\', '/')) != name]
+
+
+# link transport: compile only one implementation
+if GetDepend('XIAOZHI_TRANSPORT_MQTT'):
+    src = drop(src, 'xz_ws.c')
+else:
+    src = drop(src, 'xz_mqtt.c')
+
+CPPPATH = [cwd,
+           os.path.join(cwd, 'core', 'channel'),
+           os.path.join(cwd, 'core', 'proto'),
+           os.path.join(cwd, 'feature', 'mcp'),
+           os.path.join(cwd, 'feature', 'audio'),
+           os.path.join(cwd, 'feature', 'shell')]
+
+group = DefineGroup('xiaozhi', src, depend=['PKG_USING_XIAOZHI'],
+                    CPPPATH=CPPPATH)
+
+Return('group')

@@ -1,0 +1,23 @@
+# Board-level unit tests for the pure logic layers of the xiaozhi component.
+#
+# Only two files are under test:
+#   core/proto/xz_proto.c       protocol encode / decode
+#   feature/mcp/xz_tool.c      tool registry + JSON-RPC routing
+# Neither touches the network, Bluetooth or audio, so the cases need no fixture
+# and no stubbing - any board can run them.
+#
+# The project compiles only those two files plus Unity, not xiaozhi.c (which
+# would pull in the channels, the bootstrap HTTP client and the audio pipeline),
+# so the image stays small and boots fast.
+#
+# The firmware runs every suite by itself at boot (TEST_FWK_AUTORUN); the host
+# only reads the serial port and never writes commands to the device.
+tests:
+  - id: xiaozhi_core.unit
+    description: Board-level Unity tests for xz_proto / xz_tool - frame shape, escaping, truncation, malformed input, JSON-RPC routing.
+    harness: unity
+    tags: [unit]
+    timeout: 120
+    project_dir: project
+    harness_config:
+      autorun: true
